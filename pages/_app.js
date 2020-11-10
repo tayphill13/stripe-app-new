@@ -6,6 +6,7 @@ import {
   useStripe, 
   useElements
 } from '@stripe/react-stripe-js';
+import axios from 'axios';
 
 
 const CheckoutForm = () => {
@@ -21,9 +22,16 @@ const CheckoutForm = () => {
     });
 
     if (!error) {
-      console.log(paymentMethod);
+      const { id } = paymentMethod;
+
+      try{
+        const { data } = await axios.post("/api/charge", {id, amount: 999 });
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+  };
 
   return (
   <form onSubmit={handleSubmit} style={{maxWidth: "400px", margin: "0 auto"}}>
